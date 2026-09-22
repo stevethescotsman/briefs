@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No Hot Water This Morning — and the Smart Meter That Saw It Coming</title>
+<meta name="description" content="A cold shower, a schedule that looked fine, and a boiler quietly not firing. How a smart gas meter already in the house caught what no thermostat could.">
+<style>
+  :root{
+    --ink:#1a1a18; --ink-soft:#5c5c54; --paper:#fbfaf6; --card:#ffffff;
+    --line:#e6e2d8; --accent:#b42318; --accent-soft:#f3e3e0;
+    --good:#2f6f4f; --good-soft:#e4f0e8; --warn:#9a6a00; --warn-soft:#f7efdd;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --serif:Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--paper); color:var(--ink); font-family:var(--sans); line-height:1.65; font-size:18px;}
+  .wrap{max-width:700px; margin:0 auto; padding:0 24px;}
+  header{background:var(--accent); color:#fff; padding:60px 0 44px;}
+  header .kicker{font-family:var(--mono); font-size:.76rem; letter-spacing:.14em; text-transform:uppercase; opacity:.85;}
+  header .banner{position:relative; border-radius:12px; overflow:hidden; margin-bottom:26px; box-shadow:0 10px 30px rgba(0,0,0,.25);}
+  header .banner img{width:100%; display:block; height:auto; min-height:120px; object-fit:cover;}
+  header .banner .title{position:absolute; inset:0; display:flex; align-items:center; justify-content:flex-start; text-align:left; padding:0 0 0 28px;}
+  header .banner .title span{font-family:var(--sans); font-weight:800; font-size:clamp(1.6rem, 6vw, 3rem); letter-spacing:.02em; line-height:1;
+    color:#ffffff; text-shadow:0 0 6px rgba(57,255,20,.55),0 0 14px rgba(57,255,20,.45),0 0 26px rgba(57,255,20,.3),0 0 40px rgba(57,255,20,.25);
+    -webkit-text-stroke:1.5px #39FF14; paint-order:stroke fill;}
+  header h1{font-family:var(--serif); font-size:2.3rem; line-height:1.1; margin:14px 0 12px; font-weight:600;}
+  header p.sub{font-size:1.1rem; opacity:.94; max-width:600px;}
+  .meta{display:flex; flex-wrap:wrap; gap:8px 24px; margin-top:22px; font-family:var(--mono); font-size:.75rem;}
+  .meta span{opacity:.85;}
+  section{padding:46px 0;}
+  section.alt{background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .lede{font-size:1.15rem; color:var(--ink); font-family:var(--serif); line-height:1.6;}
+  h2{font-family:var(--serif); font-size:1.55rem; font-weight:600; margin-bottom:10px;}
+  p{margin-bottom:17px;}
+  strong{color:var(--ink);}
+  .callout{border-radius:10px; padding:15px 18px; margin:20px 0; font-size:.98rem;}
+  .callout.good{background:var(--good-soft); border:1px solid #cfe3d5;}
+  .callout.warn{background:var(--warn-soft); border:1px solid #eadfc0;}
+  .callout .tag{font-family:var(--mono); font-size:.7rem; text-transform:uppercase; letter-spacing:.08em; display:block; margin-bottom:4px; font-weight:700;}
+  .callout.good .tag{color:var(--good);} .callout.warn .tag{color:var(--warn);}
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin:20px 0;}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:18px;}
+  .card h4{font-size:.95rem; margin-bottom:6px;}
+  .card .why{color:var(--ink-soft); font-size:.9rem;}
+  .chartbox{background:#fff; border:1px solid var(--line); border-radius:10px; padding:20px 16px 10px; margin:20px 0;}
+  .chartbox .ctitle{font-weight:600; font-size:.95rem; margin-bottom:12px;}
+  .bars{display:flex; align-items:flex-end; gap:10px; height:200px; padding-top:6px;}
+  .bar-col{flex:1; display:flex; flex-direction:column; align-items:center; gap:8px; min-width:0;}
+  .bar{width:100%; max-width:56px; border-radius:6px 6px 0 0; background:#c9c4b8; min-height:3px;}
+  .bar.bad{background:var(--accent);} .bar.good{background:var(--good);}
+  .bar-label{font-size:.72rem; color:var(--ink-soft); white-space:nowrap;}
+  .bar-val{font-family:var(--mono); font-size:.72rem; color:var(--ink);}
+  .legend{display:flex; gap:18px; justify-content:center; margin-top:14px; font-size:.8rem; color:var(--ink-soft);}
+  .legend i{display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:6px; vertical-align:-1px;}
+  code{font-family:var(--mono); font-size:.86em; background:#f1efe8; border-radius:4px; padding:1px 5px;}
+  pre{background:#201f1c; color:#e8e4da; padding:16px 18px; border-radius:10px; overflow-x:auto; font-family:var(--mono); font-size:.84rem; line-height:1.5; margin:18px 0;}
+  pre .cm{color:#8a8578;}
+  footer{border-top:1px solid var(--line); padding:26px 0 40px; color:var(--ink-soft); font-size:.82rem;}
+  footer .wrap{display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap;}
+  /* notification mockup */
+  .notif-phone{max-width:340px;margin:20px auto;border:10px solid #111;border-radius:32px;overflow:hidden;background:var(--ink);box-shadow:0 18px 40px rgba(0,0,0,.22);}
+  .notif-status{color:#fff;font-family:var(--mono);font-size:.7rem;padding:10px 18px 4px;display:flex;justify-content:space-between;opacity:.9;}
+  .notif-shade{background:#232220;padding:14px 14px 16px;}
+  .notif-card{background:#ece8df;border-radius:14px;padding:13px 14px 10px;}
+  .notif-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+  .notif-app{width:32px;height:32px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.8rem;flex:0 0 auto;}
+  .notif-app + .notif-title{font-size:.82rem;color:#555;font-family:var(--sans);}
+  .notif-card h4{font-size:1rem;margin:0 0 4px;color:var(--ink);}
+  .notif-card p{font-size:.88rem;color:#333;line-height:1.45;margin:0;}
+  .notif-hint{margin-top:10px;padding-top:9px;border-top:1px solid rgba(0,0,0,.12);font-size:.75rem;color:#777;display:flex;align-items:center;gap:6px;}
+  @media(max-width:560px){ header h1{font-size:1.8rem;} body{font-size:16.5px;} section{padding:36px 0;} }
+  a{color:var(--accent); text-underline-offset:2px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="banner">
+      <img src="header.jpg" alt="The AI Guy — banner">
+      <div class="title"><span>The AI Guy</span></div>
+    </div>
+    <div class="kicker">A true story · Home Assistant</div>
+    <h1>No hot water this morning — and the smart meter that saw it coming</h1>
+    <p class="sub">A cold shower, a schedule that looked fine, and a boiler quietly refusing to fire. The thing that gave it away wasn't a thermostat — it was a gas meter already sitting in the house.</p>
+    <div class="meta">
+      <span>A smart-home owner · Sept 2026</span>
+      <span>Home Assistant</span>
+      <span>Real data</span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <p class="lede">Tuesday morning. I turn on the hot tap and it runs cold. Not "warm" — properly cold. The tank hasn't been heated.</p>
+    <p>So I do the obvious thing: I open the heating app and check the schedule. All good. The hot-water window ran. The radiators look scheduled too. Everything <em>says</em> it should be working.</p>
+    <p>Then I check the actual hot water tank. It's <strong>cold</strong>. Not just used up — it never got heated at all. So I climb up to check the boiler, and there it is: <strong>the pressure's dropped</strong>. The boiler won't light on low pressure. It's dead in the attic — which, of course, it would be on the one cold morning of the year.</p>
+    <p>The fix is manual and fiddly: top up the pressure, then reboot the boiler from the isolator switch in the tank cupboard. It works, and by mid-morning the tank's heating again.</p>
+    <p>But the question nags at me all day: <strong>the schedule said everything was fine, and nothing warned me until I put my hand on a cold tank.</strong></p>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <h2>Why the schedule lied</h2>
+    <p class="lead" style="color:var(--ink-soft); font-size:1.05rem;">The heart of the problem is that the app and the boiler are moving on two different clocks.</p>
+    <p>My heating is run by two smart controllers — a <strong>Heatmiser Neo</strong> for the tank and radiators, and <strong>Tado</strong> for other zones. Both are excellent at sending a signal to the boiler: <em>"please fire."</em></p>
+    <p>But that signal is one-way. When the boiler can't light — low pressure, a lockout, a gas problem — the controllers don't know. They keep showing the schedule as running, because <em>they asked for it</em>. They have no idea <em>nothing happened</em>.</p>
+    <div class="callout warn">
+      <span class="tag">The real issue</span>
+      <strong>Command is not proof.</strong> "I asked the boiler to fire" and "the boiler fired" are two different facts. No controller setting will ever tell you the whole story — you have to measure the <em>outcome</em>.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>The thing already in the house</h2>
+    <p class="lead" style="color:var(--ink-soft); font-size:1.05rem;">The fix wasn't new hardware. It was data Home Assistant was already collecting.</p>
+    <p>My Home Assistant setup already has a <strong>smart gas meter</strong> wired in (through my energy supplier). Its whole job is to measure gas <em>actually burned</em> — the outcome. It reports in half-hourly chunks.</p>
+    <p>That's the missing signal. It's now a simple check:</p>
+    <pre><span class="cm"># is the boiler being asked to fire?</span>
+any heat demand is ON
+
+<span class="cm"># ...but has no gas been burned for an hour?</span>
+gas used in the last hour &lt; 0.05 m³
+
+<span class="cm"># ...then it isn't lighting. Say so, loudly.</span>
+→ notify: "Possible Boiler Issue"
+</pre>
+    <div class="callout good">
+      <span class="tag">The fix</span>
+      A "boiler demanded but not firing" watchdog, built in Home Assistant. <strong>Zero new hardware, zero wiring, zero cost.</strong> It reads data the house already had and raises the alarm the moment a dead window closes.
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <h2>And the data proves it wasn't one-off</h2>
+    <p class="lead" style="color:var(--ink-soft); font-size:1.05rem;">Pulling the week's gas history showed the failure in black and white.</p>
+    <p>The Monday before, the boiler — likely already low on pressure — burned gas in the <em>morning</em> and then <strong>nothing all evening</strong>, despite the evening hot-water window running. It stayed dead overnight and through Tuesday's early hot-water call, until I topped it up around 07:15.</p>
+
+    <div class="chartbox">
+      <div class="ctitle">Gas burned per day (m³) — the week the boiler died</div>
+      <div class="bars">
+        <div class="bar-col"><span class="bar-val">1.48</span><div class="bar good" style="height:36%"></div><span class="bar-label">Mon 14</span></div>
+        <div class="bar-col"><span class="bar-val">1.53</span><div class="bar good" style="height:37%"></div><span class="bar-label">Tue 15</span></div>
+        <div class="bar-col"><span class="bar-val">3.47</span><div class="bar good" style="height:84%"></div><span class="bar-label">Wed 16</span></div>
+        <div class="bar-col"><span class="bar-val">2.98</span><div class="bar good" style="height:72%"></div><span class="bar-label">Thu 17</span></div>
+        <div class="bar-col"><span class="bar-val">2.61</span><div class="bar good" style="height:63%"></div><span class="bar-label">Fri 18</span></div>
+        <div class="bar-col"><span class="bar-val">1.56</span><div class="bar good" style="height:38%"></div><span class="bar-label">Sat 19</span></div>
+        <div class="bar-col"><span class="bar-val">4.13</span><div class="bar good" style="height:100%"></div><span class="bar-label">Sun 20</span></div>
+        <div class="bar-col"><span class="bar-val">0.99</span><div class="bar bad" style="height:24%"></div><span class="bar-label">Mon 21</span></div>
+        <div class="bar-col"><span class="bar-val">1.31</span><div class="bar good" style="height:32%"></div><span class="bar-label">Tue 22</span></div>
+      </div>
+      <div class="legend">
+        <span><i style="background:var(--good)"></i>Fired normally</span>
+        <span><i style="background:var(--accent)"></i>Boiler down (flagged)</span>
+      </div>
+    </div>
+
+    <p>Look at Monday: <code>0.99 m³</code>, but <strong>all of it in the morning</strong>. The evening hot-water window — the one I'd have assumed was fine — burned zero. Tuesday started the same way until my manual fix.</p>
+    <div class="callout good">
+      <span class="tag">What this means</span>
+      If that watchdog had been live the night before my cold shower, it would have pinged me at <strong>18:30 Monday</strong> — a full twelve hours before I put my hand on a cold tank. The failure was sitting in the data the whole time.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>What I actually built</h2>
+    <p class="lead" style="color:var(--ink-soft); font-size:1.05rem;">Two small pieces in Home Assistant, both free.</p>
+    <div class="grid">
+      <div class="card">
+        <h4>1 · "Any Heat Demand"</h4>
+        <div class="why">A single switch that turns on if <em>any</em> source is asking for heat — the tank's hot-water control, or any radiator zone on either controller. Covers the whole house.</div>
+      </div>
+      <div class="card">
+        <h4>2 · The watchdog</h4>
+        <div class="why">Starts a clock when heat is demanded. If it's still demanded after an hour and the gas meter hasn't moved past a tiny floor, it alerts. At most once per failing window.</div>
+      </div>
+    </div>
+    <p>The alert arrives on my phone <em>and</em> watch, straight to the Home Assistant dashboard. It's <strong>read-only by design</strong> — it reads the meter and tells me. It never sends a command to the boiler, so there's no way for it to make things worse, only to warn me sooner.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>What you'd actually get on your phone</h2>
+    <p class="lead" style="color:var(--ink-soft); font-size:1.05rem;">The moment a dead window closes, this appears. No checking required.</p>
+    <div class="notif-phone">
+      <div class="notif-status"><span>11:37</span><span>5G · ⌂</span></div>
+      <div class="notif-shade">
+        <div class="notif-card">
+          <div class="notif-head"><div class="notif-app">HA</div><div class="notif-title">Home Assistant</div></div>
+          <h4>♨️ Possible Boiler Issue</h4>
+          <p>Heat has been demanded for over an hour but gas has only risen 0.01 m³ in that time — the boiler hasn't lit properly.</p>
+          <p style="margin-top:6px;">Sources calling: Hot water, Hallway, Living Room.</p>
+          <p style="margin-top:6px;">Check boiler pressure and that it's firing — the hot water tank / heating will deplete.</p>
+          <div class="notif-hint">👆 Tap to open Home Assistant</div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:.88rem;color:var(--ink-soft);margin-top:18px;">The "Sources calling" line and the gas figure are pulled live at fire time, so it always names exactly which zones or hot water were demanding when the boiler stayed silent. Tapping opens the Home Assistant dashboard.</p>
+  </div>
+</section>
+
+<section class="amp">
+  <div class="wrap">
+    <h2>What I'd tell anyone else</h2>
+    <p><strong>1. Check what you already have before buying anything.</strong> The answer was sitting in a gas meter I wasn't even looking at.</p>
+    <p><strong>2. Command is not proof.</strong> Trust measurements over requests. "The schedule ran" tells you nothing if nothing actually happened.</p>
+    <p><strong>3. You don't need real-time to catch a slow death.</strong> Half-hourly was plenty. The boiler doesn't fail in milliseconds — it fails for whole windows at a time.</p>
+    <p><strong>4. Software first.</strong> The "obvious" fix (add a temperature probe, wire it up) wasn't wrong — it was premature. The software-only answer worked for free, in minutes.</p>
+    <div class="callout good">
+      <span class="tag">Bottom line</span>
+      A problem that looked like it needed hardware — and a ladder, and cold hands — was solved entirely with a smart meter the house already had and a short Home Assistant automation. Cost: £0. And it would have warned me the evening before I ever put a hand in cold water.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>A true story — boiler watchdog in Home Assistant</span>
+    <span>Real data · Sept 2026</span>
+  </div>
+</footer>
+
+</body>
+</html>
